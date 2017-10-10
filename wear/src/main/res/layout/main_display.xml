@@ -2,35 +2,54 @@
 <android.support.wear.widget.BoxInsetLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:background="@color/black"
+    tools:context=".Main_Battery_Level">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:id="@+id/startButton"
+        android:layout_gravity="center_horizontal" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
-        app:boxedEdges="all">
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        app:boxedEdges="all"
+        android:background="@drawable/battery_icon_black_bitmap">
 
-        <TextView
-            android:gravity="center"
-            android:layout_height="wrap_content"
+        <ProgressBar
             android:layout_width="match_parent"
-            android:text="@string/sometext"
-            android:textColor="@color/black" />
+            android:layout_height="match_parent"
+            android:progressDrawable="@drawable/progressbar_battery_level"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/batteryPercentage_pb"
+            android:padding="0dp" />
+        <TextView
+            android:id="@+id/batteryPercentage_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/highlight_edges"
+
+            />
 
         <ImageButton
-            android:background="@null"
-            android:layout_gravity="bottom|left"
-            android:layout_height="50dp"
-            android:layout_width="50dp"
-            android:src="@drawable/ok" />
+            android:id="@+id/mainBatteryImage"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/highlight_edges" />
 
-        <ImageButton
-            android:background="@null"
-            android:layout_gravity="bottom|right"
-            android:layout_height="50dp"
-            android:layout_width="50dp"
-            android:src="@drawable/cancel" />
+        <!--"-->
+
     </FrameLayout>
 </android.support.wear.widget.BoxInsetLayout>

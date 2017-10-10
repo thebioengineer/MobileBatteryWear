@@ -1,9 +1,6 @@
 <resources>
-    <string name="app_name">Android Wear Phone Battery Monitor</string>
+    <string name="app_name">watchBattery</string>
 
-    <string name="Intro">Start this application to allow a background service to send your battery information to your android wear device</string>
-
-    <string name="startButton">Start Battery Monitoring</string>
     <string name="title">Hello Notification!</string>
     <string name="notification_posted">Notification posted</string>
 </resources>
