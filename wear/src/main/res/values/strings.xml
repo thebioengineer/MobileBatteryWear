@@ -3,4 +3,7 @@
 
     <string name="title">Hello Notification!</string>
     <string name="notification_posted">Notification posted</string>
+    <string name="ChargeStatus">Charging</string>
+
+    ChargeStatus
 </resources>

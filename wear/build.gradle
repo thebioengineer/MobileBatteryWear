@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.example.ellis.mobilebatterytowear"
         minSdkVersion 23
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -21,6 +21,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.android.support:wearable:2.0.0'
+
     compile 'com.google.android.gms:play-services-wearable:10.2.1'
     compile 'com.android.support:wear:26.0.0'
+
 }
