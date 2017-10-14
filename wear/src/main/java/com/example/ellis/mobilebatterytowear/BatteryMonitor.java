@@ -79,9 +79,10 @@ public class BatteryMonitor {
     Runnable r = new Runnable() {
         @Override
         public void run() {
-            updateBatteryPercent_Container(batteryService.requestBatteryPercent());
-            updateChargingStatus(batteryService.requestBatteryStatus());
-            handler.postDelayed(this, 1000);
+            batteryService.requestBatteryPercent_and_Status();
+            updateBatteryPercent_Container(batteryService.BatteryPercent());
+            updateChargingStatus(batteryService.BatteryStatus());
+            handler.postDelayed(this, 30000);
         }
     };
 

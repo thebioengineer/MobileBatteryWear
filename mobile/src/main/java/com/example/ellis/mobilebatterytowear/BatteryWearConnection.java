@@ -3,28 +3,24 @@ package com.example.ellis.mobilebatterytowear;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.service.carrier.CarrierMessagingService;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.common.api.ResultCallback;
-
-import java.util.Random;
-
+import com.google.android.gms.wearable.Wearable;
 
 /**
- * Created by Ellis on 10/11/2017.
+ * Created by Ellis on 10/14/2017.
  */
 
-public class BatteryMonitor_Service extends Service {
-
-    public static final String BATTERY_MONITOR_PATH = "/Mobile_Battery_Request";
+public class BatteryWearConnection extends Service {
 
     GoogleApiClient mGoogleApiClient;
-    int mobileBatteryLevel;
-    int mobileBatteryStatus;
+    final String BATTERY_MONITOR_PATH = "/BATTERY_MONITORING_PATH";
+
 
     @Override
     public void onCreate() {
@@ -43,43 +39,15 @@ public class BatteryMonitor_Service extends Service {
         super.onDestroy();
     }
 
-    public void requestBatteryPercent_and_Status() {
-
+    public void sendBatteryStatus(BatteryStatus battStatus) {
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(BATTERY_MONITOR_PATH);
-        putDataMapRequest.getDataMap().putInt("/notifiertoupdate", new Random(5000).nextInt());
+        putDataMapRequest.getDataMap().putBoolean("/ChargeStatus", battStatus.Charging);
+        putDataMapRequest.getDataMap().putFloat("/ChargeLevel", battStatus.ChargeLevel);
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
         if (!mGoogleApiClient.isConnected())
             return;
+
         DataApi.DataItemResult dataItemResult = Wearable.DataApi
                 .putDataItem(mGoogleApiClient, request).await();
-
     }
-
-    public int BatteryPercent() {
-        Float battPercent = ReceiveBatteryStatus.ChargeLevel;
-        if (battPercent != null) {
-            return battPercent.intValue();
-        } else {
-            return 0;
-        }
-
-    }
-
-    public int BatteryStatus() {
-        Boolean battStatus = ReceiveBatteryStatus.Charging;
-        Float battPercent = ReceiveBatteryStatus.ChargeLevel;
-        if (battStatus) {
-            if (battPercent < 100) {
-                return 0;
-            } else {
-                return 1;
-            }
-        } else {
-            return -1;
-        }
-
-    }
-
-
-
 }

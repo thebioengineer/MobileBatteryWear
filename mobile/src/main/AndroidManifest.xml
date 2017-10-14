@@ -9,6 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name=".BackgroundBatteryService" />
+        <receiver android:name="BatteryPowerConnection" />
+
+        <service android:name=".startBatteryLevelMonitor" />
+        <service android:name=".BatteryWearConnection" />
+
 
     </application>
 

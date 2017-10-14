@@ -2,9 +2,6 @@ package com.example.ellis.mobilebatterytowear;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,9 +25,6 @@ public class Main_Battery_Level extends Activity {
         battery_percent_PB.setSecondaryProgress(100);
 
         batteryMonitor.connect(battery_percent_PB, battery_percent_Text, battery_chargeStatus_Text);
-
-        //TODO: Send message to phone to start background process to send phone battery percentage
-        //TODO: create listener to update the wearable UI when: battery percentage changes, changes charging status: charging, discharging, fully charged
     }
 
     @Override
