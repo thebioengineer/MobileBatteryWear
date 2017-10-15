@@ -2,6 +2,14 @@
 
     package="com.example.ellis.mobilebatterytowear">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+
+    <uses-feature android:name="android.hardware.bluetooth" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,11 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".BackgroundBatteryService" />
-        <receiver android:name="BatteryPowerConnection" />
-
-        <service android:name=".startBatteryLevelMonitor" />
+        <receiver android:name=".BatteryPowerConnection" />
+        <uses-library android:name="com.google.android.wearable" android:required="false"/>
+        <service android:name=".startBatteryLevelMonitor"
+            android:enabled="true">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </service>
         <service android:name=".BatteryWearConnection" />
-
 
     </application>
 

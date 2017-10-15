@@ -25,7 +25,15 @@
         </activity>
 
         <service android:name=".BatteryMonitor_Service" />
-        <service android:name=".ReceiveBatteryStatus" />
+        <service android:name=".ReceiveBatteryStatus">
+
+            <intent-filter>
+                <action
+                    android:name="com.google.android.gms.wearable.DATA_CHANGED"/>
+                <data android:scheme="wear" android:host="*"
+                    android:path="/Mobile_Battery_Request" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

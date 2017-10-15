@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Wearable;
+
 public class Main_Battery_Level extends Activity {
 
     private TextView battery_chargeStatus_Text;
     private TextView battery_percent_Text;
     private ProgressBar battery_percent_PB;
-    private BatteryMonitor batteryMonitor = new BatteryMonitor();
+    private BatteryLevelUpdater batteryMonitor = new BatteryLevelUpdater();
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +28,12 @@ public class Main_Battery_Level extends Activity {
         battery_percent_PB.setMax(100);
         battery_percent_PB.setSecondaryProgress(100);
 
-        batteryMonitor.connect(battery_percent_PB, battery_percent_Text, battery_chargeStatus_Text);
+        if(null == mGoogleApiClient){
+            mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
+        }
+        if(!mGoogleApiClient.isConnected()) mGoogleApiClient.connect();
+
+        batteryMonitor.connect(battery_percent_PB, battery_percent_Text, battery_chargeStatus_Text, mGoogleApiClient);
     }
 
     @Override

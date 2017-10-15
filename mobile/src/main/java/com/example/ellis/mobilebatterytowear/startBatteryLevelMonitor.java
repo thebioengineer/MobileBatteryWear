@@ -3,6 +3,7 @@ package com.example.ellis.mobilebatterytowear;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.android.gms.wearable.WearableListenerService;
 import com.google.android.gms.common.data.FreezableUtils;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class startBatteryLevelMonitor extends WearableListenerService {
 
-    public static final String ACTIVITY_PATH = "/Mobile_Battery_Request";
+    public static final String BATTERY_MONITOR_PATH = "/Mobile_Battery_Request";
     private Context context;
 
     @Override
@@ -30,9 +31,14 @@ public class startBatteryLevelMonitor extends WearableListenerService {
         dataevents.release();
 
         for (DataEvent event : events) {
+            Log.d("Paths:","OOGETY BOOGETY");
+
+
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
-                if (ACTIVITY_PATH.equals(path)) {
+                Log.d("Paths:",path);
+                if (BATTERY_MONITOR_PATH.equals(path)) {
+                    Log.d("Recieved message:","Start battery level reading!");
                     Intent BatteryPowerConnection = new Intent(this.context, BatteryPowerConnection.class);
                     boolean MonitorRunning = (PendingIntent.getBroadcast(this.context, 0, BatteryPowerConnection, PendingIntent.FLAG_NO_CREATE) != null);
                     if (MonitorRunning == false) {

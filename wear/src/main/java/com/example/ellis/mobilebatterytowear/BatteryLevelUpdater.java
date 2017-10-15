@@ -1,16 +1,19 @@
 package com.example.ellis.mobilebatterytowear;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 /**
  * Created by Ellis on 10/10/2017.
  */
 
-public class BatteryMonitor {
+public class BatteryLevelUpdater {
 
     ProgressBar percentBar;
     TextView percentText;
@@ -19,12 +22,12 @@ public class BatteryMonitor {
 
     private Handler handler = new Handler();
 
-    void connect(ProgressBar percent_pbView, TextView percent_txtView, TextView chargeStatus_txtView) {
+    void connect(ProgressBar percent_pbView, TextView percent_txtView, TextView chargeStatus_txtView, GoogleApiClient mGoogleApiClient) {
         percentBar = percent_pbView;
         percentText = percent_txtView;
         chargingText = chargeStatus_txtView;
         batteryService = new BatteryMonitor_Service();
-
+        batteryService.onCreate(mGoogleApiClient);
     }
 
     void start() {
@@ -45,6 +48,7 @@ public class BatteryMonitor {
             public void run() {
                 percentBar.setProgress(percent);
                 percentText.setText(percent + "%");
+                Log.d("BatteryLevel",percent+"%");
             }
         });
     }
@@ -82,7 +86,7 @@ public class BatteryMonitor {
             batteryService.requestBatteryPercent_and_Status();
             updateBatteryPercent_Container(batteryService.BatteryPercent());
             updateChargingStatus(batteryService.BatteryStatus());
-            handler.postDelayed(this, 30000);
+            handler.postDelayed(this, 1000);
         }
     };
 

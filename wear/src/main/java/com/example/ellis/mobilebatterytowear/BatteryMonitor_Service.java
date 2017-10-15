@@ -1,10 +1,13 @@
 package com.example.ellis.mobilebatterytowear;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -26,11 +29,9 @@ public class BatteryMonitor_Service extends Service {
     int mobileBatteryLevel;
     int mobileBatteryStatus;
 
-    @Override
-    public void onCreate() {
+    public void onCreate(GoogleApiClient mGoogleApiClientIN) {
         super.onCreate();
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
-        mGoogleApiClient.connect();
+        mGoogleApiClient=mGoogleApiClientIN;
     }
 
     @Override
@@ -46,12 +47,14 @@ public class BatteryMonitor_Service extends Service {
     public void requestBatteryPercent_and_Status() {
 
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(BATTERY_MONITOR_PATH);
-        putDataMapRequest.getDataMap().putInt("/notifiertoupdate", new Random(5000).nextInt());
+        int BatteryNotifierInt = new Random().nextInt(5000);
+        putDataMapRequest.getDataMap().putInt("/notifiertoupdate", BatteryNotifierInt);
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
         if (!mGoogleApiClient.isConnected())
             return;
-        DataApi.DataItemResult dataItemResult = Wearable.DataApi
-                .putDataItem(mGoogleApiClient, request).await();
+        PendingResult<DataApi.DataItemResult> pendingResult  = Wearable.DataApi
+                .putDataItem(mGoogleApiClient, request);
+        Log.d("Sent Request:","BatteryStatusPlease!"+BatteryNotifierInt);
 
     }
 
@@ -68,6 +71,10 @@ public class BatteryMonitor_Service extends Service {
     public int BatteryStatus() {
         Boolean battStatus = ReceiveBatteryStatus.Charging;
         Float battPercent = ReceiveBatteryStatus.ChargeLevel;
+        if(battStatus==null){
+            return 0 ;
+        }
+
         if (battStatus) {
             if (battPercent < 100) {
                 return 0;
