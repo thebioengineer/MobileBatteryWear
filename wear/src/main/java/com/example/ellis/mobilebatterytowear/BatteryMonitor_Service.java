@@ -72,7 +72,7 @@ public class BatteryMonitor_Service extends Service {
         Boolean battStatus = ReceiveBatteryStatus.Charging;
         Float battPercent = ReceiveBatteryStatus.ChargeLevel;
         if(battStatus==null){
-            return 0 ;
+            return -1 ;
         }
 
         if (battStatus) {

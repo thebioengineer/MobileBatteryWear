@@ -21,9 +21,14 @@
         <receiver android:name=".BatteryPowerConnection" />
         <uses-library android:name="com.google.android.wearable" android:required="false"/>
         <service android:name=".startBatteryLevelMonitor"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action
+                    android:name="com.google.android.gms.wearable.DATA_CHANGED"/>
+                <data android:scheme="wear" android:host="*"
+                    android:path="/Mobile_Battery_Request" />
             </intent-filter>
         </service>
         <service android:name=".BatteryWearConnection" />

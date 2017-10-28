@@ -26,7 +26,7 @@ public class Main_Battery_Level extends Activity {
         battery_percent_Text = (TextView) findViewById(R.id.batteryPercentage_text);
         battery_percent_PB = (ProgressBar) findViewById(R.id.batteryPercentage_pb);
         battery_percent_PB.setMax(100);
-        battery_percent_PB.setSecondaryProgress(100);
+        battery_percent_PB.setSecondaryProgress(0);
 
         if(null == mGoogleApiClient){
             mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();

@@ -28,6 +28,7 @@ public class BackgroundBatteryService extends Service {
         this.backgroundThread = new Thread(batteryLevelTask);
         batteryStatusObject = new BatteryStatus();
         wearConnection = new BatteryWearConnection();
+        wearConnection.onCreate(this);
     }
 
     private Runnable batteryLevelTask = new Runnable() {

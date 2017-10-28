@@ -1,6 +1,7 @@
 package com.example.ellis.mobilebatterytowear;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.service.carrier.CarrierMessagingService;
@@ -22,10 +23,10 @@ public class BatteryWearConnection extends Service {
     final String BATTERY_MONITOR_PATH = "/BATTERY_MONITORING_PATH";
 
 
-    @Override
-    public void onCreate() {
+    //@Override
+    public void onCreate(Context context) {
         super.onCreate();
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
+        mGoogleApiClient = new GoogleApiClient.Builder(context).addApi(Wearable.API).build();
         mGoogleApiClient.connect();
     }
 
