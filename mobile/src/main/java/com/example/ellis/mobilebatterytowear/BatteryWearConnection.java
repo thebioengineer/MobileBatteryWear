@@ -13,6 +13,8 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
+import java.util.Random;
+
 /**
  * Created by Ellis on 10/14/2017.
  */
@@ -25,9 +27,10 @@ public class BatteryWearConnection extends Service {
 
     //@Override
     public void onCreate(Context context) {
-        super.onCreate();
+
         mGoogleApiClient = new GoogleApiClient.Builder(context).addApi(Wearable.API).build();
         mGoogleApiClient.connect();
+        super.onCreate();
     }
 
     @Override
@@ -41,12 +44,24 @@ public class BatteryWearConnection extends Service {
     }
 
     public void sendBatteryStatus(BatteryStatus battStatus) {
+        int Randvalue = new Random().nextInt(5000);
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(BATTERY_MONITOR_PATH);
-        putDataMapRequest.getDataMap().putBoolean("/ChargeStatus", battStatus.Charging);
-        putDataMapRequest.getDataMap().putFloat("/ChargeLevel", battStatus.ChargeLevel);
+        putDataMapRequest.getDataMap().putString("/ChargeStatus", battStatus.Charging + " : " + Randvalue);
+        putDataMapRequest.getDataMap().putString("/ChargeLevel", battStatus.ChargeLevel + " : " + Randvalue);
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
-        if (!mGoogleApiClient.isConnected())
-            return;
+        int reconnectAttempts=0;
+        while (!mGoogleApiClient.isConnected()){
+            mGoogleApiClient.connect();
+            reconnectAttempts+=1;
+            if(reconnectAttempts>5){
+                return;
+            }
+            Log.d("Attempt reconnect","trying to reconnect");
+        }
+
+        Log.d("BatterySend:Charge", battStatus.Charging + " : " + Randvalue);
+        Log.d("BatterySend:level", battStatus.ChargeLevel + " : " + Randvalue);
+
 
         DataApi.DataItemResult dataItemResult = Wearable.DataApi
                 .putDataItem(mGoogleApiClient, request).await();

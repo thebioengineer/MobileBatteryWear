@@ -24,7 +24,6 @@ import java.util.List;
 public class startBatteryLevelMonitor extends WearableListenerService {
 
     public static final String BATTERY_MONITOR_PATH = "/Mobile_Battery_Request";
-    public static final String BATTERY_MONITOR_PATH2 =  "/notifiertoupdate";
     private Context context;
 
     @Override
@@ -36,11 +35,16 @@ public class startBatteryLevelMonitor extends WearableListenerService {
 
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
-                Log.d("Paths:",path);
-                if (BATTERY_MONITOR_PATH.equals(path) || BATTERY_MONITOR_PATH2.equals(path)) {
+
+                Log.d("path",path);
+
+                if (BATTERY_MONITOR_PATH.equals(path)) {
+
                     Intent BatteryPowerConnection = new Intent(getApplicationContext(), BatteryPowerConnection.class);
                     boolean MonitorRunning = (PendingIntent.getBroadcast(getApplicationContext(), 0, BatteryPowerConnection, PendingIntent.FLAG_NO_CREATE) != null);
+                    Log.d("runBackground","gotStartrun!");
                     if (MonitorRunning == false) {
+                        Log.d("runBackground","getBatteryLevel!");
                         sendBroadcast(BatteryPowerConnection);
                     }
                 }

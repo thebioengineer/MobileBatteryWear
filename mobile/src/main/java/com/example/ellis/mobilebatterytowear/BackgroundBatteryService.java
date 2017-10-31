@@ -3,6 +3,7 @@ package com.example.ellis.mobilebatterytowear;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.util.Log;
 
 /**
  * Created by Ellis on 10/14/2017.
@@ -29,6 +30,7 @@ public class BackgroundBatteryService extends Service {
         batteryStatusObject = new BatteryStatus();
         wearConnection = new BatteryWearConnection();
         wearConnection.onCreate(this);
+        Log.d("OnCreate","BackgroundBattService Ran");
     }
 
     private Runnable batteryLevelTask = new Runnable() {
@@ -51,7 +53,11 @@ public class BackgroundBatteryService extends Service {
             int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-            float batteryPct = level / (float) scale;
+            float batteryPct = level * 100 / (float) scale;
+
+            Log.d("chargeLevel",batteryPct+"%");
+            Log.d("Charging?",isCharging+"?");
+
             batteryStatusObject.updateStatus(batteryPct, isCharging);
         }
 
@@ -72,6 +78,9 @@ public class BackgroundBatteryService extends Service {
         if (!this.isRunning) {
             this.isRunning = true;
             this.backgroundThread.start();
+            Log.d("GetBackgroundBatt","Battery!!!");
+
+
         }
         return START_STICKY;
     }

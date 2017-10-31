@@ -47,6 +47,8 @@ public class BatteryLevelUpdater {
             @Override
             public void run() {
                 percentBar.setProgress(percent);
+                percentBar.setSecondaryProgress(percent);
+
                 percentText.setText(percent + "%");
                 Log.d("BatteryLevel",percent+"%");
             }

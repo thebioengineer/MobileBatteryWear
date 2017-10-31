@@ -3,6 +3,7 @@ package com.example.ellis.mobilebatterytowear;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataEvent;
@@ -23,6 +24,7 @@ public class ReceiveBatteryStatus extends WearableListenerService {
 
     public static Boolean Charging;
     public static Float ChargeLevel;
+    public static Boolean RecievedData=false;
 
     @Override
     public void onDataChanged(DataEventBuffer dataevents) {
@@ -35,8 +37,15 @@ public class ReceiveBatteryStatus extends WearableListenerService {
                 if (BATTERY_MONITOR_PATH.equals(path)) {
                     DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
 
-                    Charging = dataMapItem.getDataMap().getBoolean("/ChargeStatus");
-                    ChargeLevel = dataMapItem.getDataMap().getFloat("/ChargeLevel");
+                    String ChargingRand = dataMapItem.getDataMap().getString("/ChargeStatus");
+                    String ChargeLevelRand = dataMapItem.getDataMap().getString("/ChargeLevel");
+                    Charging = Boolean.parseBoolean(ChargingRand.split(" : ")[0]);
+                    ChargeLevel = Float.valueOf(ChargeLevelRand.split(" : ")[0]);
+
+                    Log.d("DataChanged:chargeLevel",ChargeLevel+"%");
+                    Log.d("DataChanged:Charging?",Charging.toString());
+
+                    RecievedData=true;
                 }
             }
         }
