@@ -13,6 +13,7 @@ public class Main_Battery_Level extends Activity {
     private TextView battery_chargeStatus_Text;
     private TextView battery_percent_Text;
     private ProgressBar battery_percent_PB;
+    private ProgressBar battery_data_Loading;
     private BatteryLevelUpdater batteryMonitor = new BatteryLevelUpdater();
     GoogleApiClient mGoogleApiClient;
 
@@ -27,13 +28,16 @@ public class Main_Battery_Level extends Activity {
         battery_percent_PB = (ProgressBar) findViewById(R.id.batteryPercentage_pb);
         battery_percent_PB.setMax(100);
         battery_percent_PB.setSecondaryProgress(0);
+        battery_data_Loading = (ProgressBar) findViewById(R.id.progressBarLoadingData);
+        battery_data_Loading.setMax(100);
+        battery_data_Loading.setSecondaryProgress(0);
 
         if(null == mGoogleApiClient){
             mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
         }
         if(!mGoogleApiClient.isConnected()) mGoogleApiClient.connect();
 
-        batteryMonitor.connect(battery_percent_PB, battery_percent_Text, battery_chargeStatus_Text, mGoogleApiClient);
+        batteryMonitor.connect(battery_percent_PB, battery_percent_Text, battery_chargeStatus_Text, mGoogleApiClient, battery_data_Loading);
     }
 
     @Override
