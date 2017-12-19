@@ -54,12 +54,14 @@ public class BatteryMonitor_Service extends Service {
             return;
         PendingResult<DataApi.DataItemResult> pendingResult  = Wearable.DataApi
                 .putDataItem(mGoogleApiClient, request);
-        Log.d("Sent Request:","BatteryStatusPlease!"+BatteryNotifierInt);
 
     }
 
     public int BatteryPercent() {
-        Float battPercent = ReceiveBatteryStatus.ChargeLevel;
+        Float battPercent = null;
+        if(ReceiveBatteryStatus.RecievedData) {
+            battPercent = ReceiveBatteryStatus.ChargeLevel;
+        }
         if (battPercent != null) {
             return battPercent.intValue();
         } else {
@@ -69,8 +71,14 @@ public class BatteryMonitor_Service extends Service {
     }
 
     public int BatteryStatus() {
-        Boolean battStatus = ReceiveBatteryStatus.Charging;
-        Float battPercent = ReceiveBatteryStatus.ChargeLevel;
+        Float battPercent = null;
+        Boolean battStatus = null;
+
+        if(ReceiveBatteryStatus.RecievedData) {
+            battPercent = ReceiveBatteryStatus.ChargeLevel;
+            battStatus = ReceiveBatteryStatus.Charging;
+        }
+
         if(battStatus==null){
             return -1 ;
         }

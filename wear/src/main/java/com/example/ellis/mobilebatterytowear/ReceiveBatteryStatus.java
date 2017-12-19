@@ -30,7 +30,7 @@ public class ReceiveBatteryStatus extends WearableListenerService {
     public void onDataChanged(DataEventBuffer dataevents) {
         final List<DataEvent> events = FreezableUtils.freezeIterable(dataevents);
         dataevents.release();
-
+        RecievedData=true;
         for (DataEvent event : events) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 String path = event.getDataItem().getUri().getPath();
