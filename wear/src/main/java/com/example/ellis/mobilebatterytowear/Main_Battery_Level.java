@@ -2,8 +2,11 @@ package com.example.ellis.mobilebatterytowear;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Wearable;
@@ -15,6 +18,7 @@ public class Main_Battery_Level extends Activity {
     private ProgressBar battery_percent_PB;
     private ProgressBar battery_data_Loading;
     private BatteryLevelUpdater batteryMonitor = new BatteryLevelUpdater();
+    private BatteryChargeAlarm batteryAlarm = new BatteryChargeAlarm();
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -38,25 +42,39 @@ public class Main_Battery_Level extends Activity {
         if(!mGoogleApiClient.isConnected()) mGoogleApiClient.connect();
 
         batteryMonitor.connect(battery_percent_PB, battery_percent_Text, battery_chargeStatus_Text, mGoogleApiClient, battery_data_Loading);
+
+        batteryAlarm.addContext(getApplicationContext(),mGoogleApiClient);
+
+        ((ImageButton) findViewById(R.id.mainBatteryImage)).setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View view) {
+                return batteryAlarm.longbuttonClick();
+            }
+        });
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         batteryMonitor.start();
+        batteryAlarm.onStart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         batteryMonitor.pause();
+        batteryAlarm.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         batteryMonitor.stop();
+        batteryAlarm.onStop();
     }
+
+
 
 
 }

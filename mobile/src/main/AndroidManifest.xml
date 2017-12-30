@@ -20,6 +20,8 @@
         android:theme="@style/AppTheme">
         <service android:name=".BackgroundBatteryService" />
         <receiver android:name=".BatteryPowerConnection" />
+        <service android:name=".BackgroundBatteryAlarmService" />
+        <receiver android:name=".BatteryAlarmConnection" />
         <uses-library android:name="com.google.android.wearable" android:required="false"/>
         <service android:name=".startBatteryLevelMonitor"
             android:enabled="true"
@@ -30,6 +32,9 @@
                     android:name="com.google.android.gms.wearable.DATA_CHANGED"/>
                 <data android:scheme="wear" android:host="*"
                     android:path="/Mobile_Battery_Request" />
+                <data android:scheme="wear" android:host="*"
+                    android:path="/Mobile_Battery_Alarm" />
+
             </intent-filter>
         </service>
         <service android:name=".BatteryWearConnection" />

@@ -1,15 +1,20 @@
 package com.example.ellis.mobilebatterytowear;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
+import android.os.IBinder;
 import android.util.Log;
 
 /**
  * Created by Ellis on 10/14/2017.
  */
 
-public class BackgroundBatteryService extends Service {
+public class BackgroundBatteryAlarmService extends Service {
 
     private boolean isRunning;
     private Context context;
@@ -30,6 +35,7 @@ public class BackgroundBatteryService extends Service {
         batteryStatusObject = new BatteryStatus();
         wearConnection = new BatteryWearConnection();
         wearConnection.onCreate(this);
+        Log.d("OnCreate","BackgroundBattService Ran");
     }
 
     private Runnable batteryLevelTask = new Runnable() {
@@ -37,7 +43,7 @@ public class BackgroundBatteryService extends Service {
         public void run() {
             //Calculate and send battery level and charging status to wear
             calculateBatteryInformation();
-            sendBatteryInformation();
+            sendFullNotification();
             stopSelf();
         }
 
@@ -54,14 +60,20 @@ public class BackgroundBatteryService extends Service {
 
             float batteryPct = level * 100 / (float) scale;
 
-            Log.d("chargeLevel",batteryPct+"%");
-            Log.d("Charging?",isCharging+"?");
-
             batteryStatusObject.updateStatus(batteryPct, isCharging);
+            Log.d("BatteryAlarm","Calculating");
         }
 
-        public void sendBatteryInformation() {
-            wearConnection.sendBatteryStatus(batteryStatusObject);
+        public void sendFullNotification() {
+            if(batteryStatusObject.ChargeLevel==69 && batteryStatusObject.Charging) {
+                wearConnection.sendNotificationFullStatus();
+
+                Intent BatteryAlarmConnection = new Intent(context, BatteryAlarmConnection.class);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast( context, 0, BatteryAlarmConnection, 0);
+
+                alarmManager.cancel(pendingIntent);
+            }
         }
     };
 
@@ -77,9 +89,6 @@ public class BackgroundBatteryService extends Service {
         if (!this.isRunning) {
             this.isRunning = true;
             this.backgroundThread.start();
-            Log.d("GetBackgroundBatt","Battery!!!");
-
-
         }
         return START_STICKY;
     }

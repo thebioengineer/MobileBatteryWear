@@ -31,6 +31,8 @@
                     android:name="com.google.android.gms.wearable.DATA_CHANGED"/>
                 <data android:scheme="wear" android:host="*"
                     android:path="/BATTERY_MONITORING_PATH" />
+                <data android:scheme="wear" android:host="*"
+                    android:path="/BATTERY_ALARM_PATH" />
             </intent-filter>
         </service>
     </application>

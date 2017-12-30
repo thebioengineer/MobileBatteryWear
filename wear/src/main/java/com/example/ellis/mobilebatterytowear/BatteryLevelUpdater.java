@@ -57,7 +57,7 @@ public class BatteryLevelUpdater {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(percentText.getVisibility()==View.GONE || percent > 0){
+                if(percentText.getVisibility()==View.GONE && percent > 0){
                     percentText.setVisibility(View.VISIBLE);
                 }
                 if(dataLoadBar.getVisibility()==View.VISIBLE && percent > 0){
